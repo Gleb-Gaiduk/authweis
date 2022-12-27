@@ -1,7 +1,3 @@
-import { Knex } from 'knex';
-
-export async function up(knex: Knex): Promise<void> {
-  return knex.raw(`
   CREATE TABLE IF NOT EXISTS permissions (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     name VARCHAR(50) UNIQUE NOT NULL,
@@ -145,17 +141,3 @@ export async function up(knex: Knex): Promise<void> {
     user_login_data
     FOR EACH ROW
     EXECUTE PROCEDURE renew_update_on();
-`);
-}
-
-export async function down(knex: Knex): Promise<void> {
-  return knex.raw(`
-  DROP TABLE IF EXISTS granted_permissions;
-  DROP TABLE IF EXISTS permissions;
-  DROP TABLE IF EXISTS roles;
-
-  DROP FUNCTION IF EXISTS renew_update_on;
-  DROP TRIGGER IF EXISTS renew_permissions_updated_on;
-  DROP TRIGGER IF EXISTS renew_roles_updated_on;
-  `);
-}

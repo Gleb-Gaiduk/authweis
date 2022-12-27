@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as Joi from 'joi';
+import { AuthModule } from './auth/auth.module';
 import { IDatabaseConfig } from './database/database-config.interface';
 import { DatabaseModule } from './database/database.module';
+import { UserAccountModule } from './user-account/user-account.module';
 
 @Module({
   imports: [
@@ -27,6 +29,8 @@ import { DatabaseModule } from './database/database.module';
           database: configService.get<string>('POSTGRES_DB'),
         } as IDatabaseConfig),
     }),
+    AuthModule,
+    UserAccountModule,
   ],
   controllers: [],
   providers: [],
