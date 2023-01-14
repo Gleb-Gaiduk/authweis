@@ -1,4 +1,4 @@
-export interface IRegisterReqDTO {
+export interface ISignUpReqDTO {
   email: string;
   password: string;
 }

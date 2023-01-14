@@ -1,19 +1,21 @@
-import { Body, Controller, Get, Param, Post, Redirect } from '@nestjs/common';
-import { IRegisterReqDTO } from '../interfaces';
+import { Body, Controller, Post, UsePipes } from '@nestjs/common';
+import { signUpSchema } from 'src/auth/schemas/validation/signUp.schema';
+import { JoiValidationPipe } from 'src/pipes/joi-validation.pipe';
+import { ISignUpReqDTO } from '../interfaces';
 import { AuthService } from './auth.service';
 
 @Controller('auth')
 class AuthController {
   constructor(private readonly _authService: AuthService) {}
-
-  @Get('test/:id')
-  test(@Param('id') param: string) {
-    return `OK: ${param}`;
-  }
-
-  @Post('register')
-  async register(@Body() registerReqDTO: IRegisterReqDTO) {
-    return registerReqDTO;
+  @Post('signup')
+  @UsePipes(
+    new JoiValidationPipe(signUpSchema, {
+      errorMessage: 'Incorrect email or password',
+    }),
+  )
+  async signUp(@Body() signUpReqDTO: ISignUpReqDTO) {
+    this._authService.createAccount(signUpReqDTO);
+    return signUpReqDTO;
   }
 
   @Post('login')
