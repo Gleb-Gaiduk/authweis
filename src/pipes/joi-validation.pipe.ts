@@ -7,7 +7,7 @@ import {
 import { ObjectSchema } from 'joi';
 
 interface IJoiValidationPipeConfig {
-  useShemaErrorMessage?: boolean;
+  useSchemaErrorMessage?: boolean;
   errorMessage?: string;
 }
 
@@ -24,10 +24,13 @@ export class JoiValidationPipe<DTO extends object>
     const { error } = this._schema.validate(value);
     const defaultErrorMessage =
       this._config?.errorMessage ?? 'Input data validation failed.';
-    const errorMessage = this._config?.useShemaErrorMessage
+
+    const errorMessage = this._config?.useSchemaErrorMessage
       ? error?.message
       : defaultErrorMessage;
+
     if (error) throw new BadRequestException(errorMessage);
+
     return value;
   }
 }

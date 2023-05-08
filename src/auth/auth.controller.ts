@@ -14,8 +14,7 @@ class AuthController {
     }),
   )
   async signUp(@Body() signUpReqDTO: ISignUpReqDTO) {
-    this._authService.createAccount(signUpReqDTO);
-    return signUpReqDTO;
+    return this._authService.createAccount(signUpReqDTO);
   }
 
   @Post('login')
